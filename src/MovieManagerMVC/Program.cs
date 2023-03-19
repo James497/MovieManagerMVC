@@ -1,3 +1,5 @@
+using MovieManagerMVC.Data;
+
 namespace MovieManagerMVC
 {
     public class Program
@@ -8,6 +10,7 @@ namespace MovieManagerMVC
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<AppDbContext>();
 
             var app = builder.Build();
 
