@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MovieManagerMVC.Data;
+using MovieManagerMVC.Data.Services;
 
 namespace MovieManagerMVC
 {
@@ -11,10 +12,14 @@ namespace MovieManagerMVC
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            #region Service Configurations
+            //Db Context
             builder.Services.AddDbContext<AppDbContext>(options => 
                         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"))
                         );
-
+            //Table Services
+            builder.Services.AddScoped<IActorsService, ActorsService>();
+            #endregion
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
