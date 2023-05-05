@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MovieManagerMVC.Data;
 using MovieManagerMVC.Data.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace MovieManagerMVC
 {
@@ -17,6 +18,8 @@ namespace MovieManagerMVC
             builder.Services.AddDbContext<AppDbContext>(options => 
                         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"))
                         );
+
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
             //Table Services
             builder.Services.AddScoped<IActorsService, ActorsService>();
             #endregion
@@ -34,12 +37,13 @@ namespace MovieManagerMVC
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Movies}/{action=Index}/{id?}");
+            app.MapRazorPages();
 
             AppDbInitializer.Seed(app);
 
